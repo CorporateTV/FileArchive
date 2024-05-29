@@ -1,7 +1,7 @@
 #!/bin/bash
-PURPLE='0;35'
-NC='\033[0m'
-VERSAO=11
+PURPLE= '0;35'
+NC= '\033[0m'
+VERSAO= 11
 
 # Limpando a Tela
 clear
@@ -17,7 +17,7 @@ java -version # Verificando a versão do Java
 if [ $? -eq 0 ] #Se o Java estiver instalado
 then #Se o Java estiver instalado
   clear
-  echo "$(tput setaf 4)[LIS]:$(tput setaf 7) Você já tem o java instalado!!! Vamos prosseguir com a instalação do JAR!"
+  echo "$(tput setaf 4)[LIS]:$(tput setaf 7) Você já tem o java instalado!!! Vamos prosseguir com a instalação!"
 
 else #Se o Java não estiver instalado
   echo "$(tput setaf 4)[LIS]:$(tput setaf 7) Opa! Não identifiquei nenhuma versão do Java instalado, mas sem problemas, irei resolver isso agora!"
@@ -34,7 +34,7 @@ else #Se o Java não estiver instalado
     sudo add-apt-repository ppa:webupd8team/java -y #Adicionando o repositório
     clear
 
-    echo "$(tput setaf 4)[LIS]:$(tput setaf 7) Atualizando! Quase lá."
+    echo "$(tput setaf 4)[LIS]:$(tput setaf 7) Atualizando! Quase lá ..."
     sleep 2
     sudo apt update -y #Atualizando
     clear
@@ -50,7 +50,38 @@ else #Se o Java não estiver instalado
   else
     echo "$(tput setaf 4)[LIS]:$(tput setaf 7) Você optou por não instalar o Java por enquanto, até a próxima então!" #Se a resposta for não
   fi
+fi  
+docker -version
+
+if [ $? -eq 0 ]
+then 
+  echo "$(tput setaf 4)[LIS]:$(tput setaf 7) Você já possui o Docker instalado! Vamos prosseguir..."
+else
+  clear
+  echo "$(tput setaf 4)[LIS]:$(tput setaf 7) Opa! Não identifiquei nenhuma versão do Docker instalado, mas sem problemas, irei resolver isso agora!"
+  echo "$(tput setaf 4)[LIS]:$(tput setaf 7) Confirme para mim se realmente deseja instalar o Docker (S/N)?"
+
+  read instalarContainer
+
+  if [ "$instalarContainer" == "S" ] ||  [ "$instalarContainer" == "s" ]
+  then
+    echo "$(tput setaf 4)[LIS]:$(tput setaf 7) Ok! Você escolheu instalar o Docker ;D"
+    echo "$(tput setaf 4)[LIS]:$(tput setaf 7) Instalando o Docker ..."
+
+    sleep 2 #Aguardando 2 segundos
+    sudo apt install docker.io -y
+    clear
+
+    echo "$(tput setaf 4)[LIS]:$(tput setaf 7) Atualizando! Quase lá ..."
+    sleep 2
+    sudo apt update -y 
+
+    echo "$(tput setaf 4)[LIS]:$(tput setaf 7) Docker instalado com sucesso! :D"
+  else
+    echo "$(tput setaf 4)[LIS]:$(tput setaf 7) Você optou por não instalar o Docker por enquanto, até a próxima então!" #Se a resposta for não
+  fi
 fi
+
 
 echo "$(tput setaf 4)[LIS]:$(tput setaf 7) Vamos instalar seu JAR agora? (S/N)?" #Perguntando se deseja instalar o JAR
 
@@ -91,10 +122,3 @@ then
 else
   echo "$(tput setaf 4)[LIS]:$(tput setaf 7) Você optou por não instalar o JAR por enquanto, até logo :D"
 fi #Fim do script
-
-# ===================================================================
-# Todos direitos reservados para o autor: Dra. Profa. Marise Miranda.
-# Sob licença Creative Commons @2020
-# Podera modificar e reproduzir para uso pessoal.
-# Proibida a comercialização e a exclusão da autoria.
-# ===================================================================
