@@ -1,23 +1,24 @@
+CREATE DATABASE lisyncDB;
 USE lisyncDB;
-
+-- DROP database lisyncDB;
 /*------------------------------------- EMPRESA -------------------------------------*/
 
-CREATE TABLE Empresa (
+CREATE  TABLE IF NOT EXISTS Empresa (
 	idEmpresa 		INT PRIMARY KEY AUTO_INCREMENT,
 	nomeFantasia 	VARCHAR(45),
 	plano 			VARCHAR(45),
-    
+    cnpj            varchar(14),
 	CONSTRAINT CHK_Plano CHECK (plano IN('Basico', 'Corporativo', 'Enterprise'))
     /*Interprise -> Enterprise*/
 );
 
-INSERT INTO Empresa (nomeFantasia, plano) VALUES
-	("SPTech", 'Corporativo'),
-    ("Elera.", 'Basico');
+INSERT INTO Empresa (nomeFantasia, plano, cnpj) VALUES
+	("SPTech", 'Corporativo', 12345678912345),
+    ("Elera.", 'Basico', 12345678912345);
 
 /*------------------------------------- AMBIENTE -------------------------------------*/
 
-CREATE TABLE Ambiente (
+CREATE TABLE IF NOT EXISTS Ambiente (
 	idAmbiente 		INT PRIMARY KEY AUTO_INCREMENT,
 	setor 			VARCHAR(45),
 	andar 			VARCHAR(45),
@@ -28,29 +29,29 @@ CONSTRAINT fkEmpresaAmbiente FOREIGN KEY (fkEmpresa) REFERENCES Empresa(idEmpres
 
 /*------------------------------------- USUÁRIO -------------------------------------*/
 
-CREATE TABLE Usuario (
+CREATE TABLE IF NOT EXISTS Usuario (
 	idUsuario 		INT PRIMARY KEY AUTO_INCREMENT,
     /* nome -> nomeUsuario */
 	nomeUsuario		VARCHAR(45),
 	email 			VARCHAR(225),
 	senha 			VARCHAR(45),
-	fkEmpresa 		INT NOT NULL,
+	fkEmpresa 		INT,
 	fkGestor 		INT,
     
 	CONSTRAINT fkEmpresa FOREIGN KEY (fkEmpresa) REFERENCES Empresa(idEmpresa),
 	CONSTRAINT fkGestor FOREIGN KEY (fkGestor) REFERENCES Usuario(idUsuario)
 );
 
-INSERT INTO Usuario (nome, email, senha, fkEmpresa, fkGestor) VALUES 
+INSERT INTO Usuario (nomeUsuario, email, senha, fkEmpresa, fkGestor) VALUES 
 	("Felipe Almeida", "felipe.almeida@sptech.school", "felipe123", 1, null),
 	("Carlos Manoel", "carlos.manoel@sptech.school", "carlos123", 1, 1),
 	("Marcela Lopez", "marcela.lopez@elera.io", "marcela123", 2, null),
 	("José Felipe", "jose.felipe@elera.io", "jose123", 2, 1),
-	("Ademiro", "admin", "admin", 1, null);
+	("Admin Lisync", "admin@admin", "admin", null, null);
     
 /*------------------------------------- TELEVISÃO -------------------------------------*/
 
-CREATE TABLE Televisao (
+CREATE TABLE IF NOT EXISTS Televisao (
 	idTelevisao 	INT PRIMARY KEY AUTO_INCREMENT,
     /* nome -> nomeTelevisao */
 	nomeTelevisao	VARCHAR(45), 
@@ -64,7 +65,7 @@ CREATE TABLE Televisao (
 
 /*------------------------------------- COMPONENTE -------------------------------------*/
 
-CREATE TABLE Componente (
+CREATE TABLE IF NOT EXISTS Componente (
 	idComponente 	INT PRIMARY KEY AUTO_INCREMENT,
 	modelo 			VARCHAR(225),
 	identificador 	VARCHAR(225),
@@ -76,7 +77,7 @@ CREATE TABLE Componente (
 
 /*------------------------------------- JANELA -------------------------------------*/
 
-CREATE TABLE Janela (
+CREATE TABLE IF NOT EXISTS Janela (
 	idJanela 		INT PRIMARY KEY AUTO_INCREMENT,
 	pidJanela		VARCHAR(45),
 	titulo 			VARCHAR(225),
@@ -89,7 +90,7 @@ CREATE TABLE Janela (
 
 /*------------------------------------- LOG PROCESSO -------------------------------------*/
 
-CREATE TABLE LogProcesso (
+CREATE TABLE IF NOT EXISTS LogProcesso (
 	idLog 			INT PRIMARY KEY AUTO_INCREMENT,
 	pid 			INT,
 	dataHora 		VARCHAR(45),
@@ -103,7 +104,7 @@ CREATE TABLE LogProcesso (
 
 /*------------------------------------- LOG COMPONENTE -------------------------------------*/
 
-CREATE TABLE LogComponente (
+CREATE TABLE IF NOT EXISTS LogComponente (
 	idLogComponente INT PRIMARY KEY AUTO_INCREMENT,
 	dataHora 		VARCHAR(45),
 	valor 			DOUBLE,
@@ -114,10 +115,11 @@ CREATE TABLE LogComponente (
 
 /*------------------------------------- COMANDO -------------------------------------*/
 
-CREATE TABLE Comando (
+CREATE TABLE IF NOT EXISTS Comando (
 	idComando 		INT PRIMARY KEY AUTO_INCREMENT,
     /*nome -> nomeComando*/
-	nomeComando 	VARCHAR(45),
+	nomeComando 	text,
+    resposta text,
 	fkTelevisao		INT,
     
 	CONSTRAINT fkTelevisaoComando FOREIGN KEY (fkTelevisao) REFERENCES Televisao(idTelevisao)
@@ -126,11 +128,14 @@ CREATE TABLE Comando (
 /*------------------------------------- SELECTS -------------------------------------*/
 
 SELECT * FROM Janela;
-SELECT * FROM log;
+SELECT * FROM LogProcesso;
 SELECT * FROM LogComponente;
 SELECT * FROM Componente;
 SELECT * FROM Televisao;
-SELECT * FROM ambiente;
+SELECT * FROM Ambiente;
 SELECT * FROM Empresa;
 SELECT * FROM Usuario;
-SELECT * FROM comando;
+SELECT * FROM Comando;
+
+
+

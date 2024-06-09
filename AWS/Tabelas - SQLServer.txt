@@ -3,14 +3,15 @@ CREATE TABLE Empresa (
 	idEmpresa INT PRIMARY KEY IDENTITY,
 	nomeFantasia VARCHAR(45),
 	plano VARCHAR(45),
+	cnpj varchar(14),
     
 	CONSTRAINT CHK_Plano CHECK (plano IN('Basico', 'Corporativo', 'Enterprise'))
 );
 
 -- Inserção de dados na tabela Empresa
-INSERT INTO Empresa (nomeFantasia, plano) VALUES
-	('SPTech', 'Corporativo'),
-    ('Elera.', 'Basico');
+INSERT INTO Empresa (nomeFantasia, plano, cnpj) VALUES
+	('SPTech', 'Corporativo',12345678912345),
+    ('Elera.', 'Basico',12345678912345);
 
 -- Criação da tabela Ambiente
 CREATE TABLE Ambiente (
@@ -18,9 +19,11 @@ CREATE TABLE Ambiente (
 	setor VARCHAR(45),
 	andar VARCHAR(45),
 	fkEmpresa INT,
-    
+	
 	CONSTRAINT fkEmpresaAmbiente FOREIGN KEY (fkEmpresa) REFERENCES Empresa(idEmpresa)
 );
+
+-- INSERT INTO Ambiente (setor, andar, fkEmpresa) VALUES ('num', 'num', 1);
 
 -- Criação da tabela Usuario
 CREATE TABLE Usuario (
@@ -28,7 +31,7 @@ CREATE TABLE Usuario (
 	nomeUsuario VARCHAR(45),
 	email VARCHAR(225),
 	senha VARCHAR(45),
-	fkEmpresa INT NOT NULL,
+	fkEmpresa INT,
 	fkGestor INT,
     
 	CONSTRAINT fkEmpresa FOREIGN KEY (fkEmpresa) REFERENCES Empresa(idEmpresa),
@@ -41,7 +44,7 @@ INSERT INTO Usuario (nomeUsuario, email, senha, fkEmpresa, fkGestor) VALUES
 	('Carlos Manoel', 'carlos.manoel@sptech.school', 'carlos123', 1, 1),
 	('Marcela Lopez', 'marcela.lopez@elera.io', 'marcela123', 2, null),
 	('José Felipe', 'jose.felipe@elera.io', 'jose123', 2, 1),
-	('Ademiro', 'admin', 'admin', 1, null);
+	('Admin Lisync', 'admin', 'admin', null, null);
 
 -- Criação da tabela Televisao
 CREATE TABLE Televisao (
@@ -102,7 +105,8 @@ CREATE TABLE LogComponente (
 -- Criação da tabela Comando
 CREATE TABLE Comando (
 	idComando INT PRIMARY KEY IDENTITY,
-	nomeComando VARCHAR(45),
+	nomeComando TEXT,
+	resposta TEXT,
 	fkTelevisao INT,
     
 	CONSTRAINT fkTelevisaoComando FOREIGN KEY (fkTelevisao) REFERENCES Televisao(idTelevisao)
@@ -118,3 +122,8 @@ SELECT * FROM Ambiente;
 SELECT * FROM Empresa;
 SELECT * FROM Usuario;
 SELECT * FROM Comando;
+
+
+
+
+
