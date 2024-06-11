@@ -1,0 +1,34 @@
+version: '3.3'
+
+services:
+  # ---------- SERVICE LISYNC ----------- 
+  lisync-service:
+    container_name: serviceLisync
+    image: giuliacarmona/lisync-jar
+    restart: always
+    build:
+      context: .
+      args:
+        JAR_URL: https://github.com/LiSync-Signage/JAR-Lisync/raw/main/jar/JAR_Lisync.jar
+    ports:
+      - 8080:8080
+    depends_on:
+      - lisync-mysql
+
+  # ----------- MYSQL LISYNC ------------ 
+  lisync-mysql:
+    container_name: bancoLisync
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: lisyncDB
+      MYSQL_ROOT_PASSWORD: urubu100
+    volumes:
+      - ./init-scripts:/docker-entrypoint-initdb.d
+      - mysql-data:/var/lib/mysql
+    ports:
+      - 3306:3306
+
+volumes:
+  mysql-data:
+
