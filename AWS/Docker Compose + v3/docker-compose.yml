@@ -4,31 +4,25 @@ services:
   # ---------- SERVICE LISYNC ----------- 
   lisync-service:
     container_name: serviceLisync
-    image: giuliacarmona/lisync-jar
-    restart: always
-    build:
-      context: .
-      args:
-        JAR_URL: https://github.com/LiSync-Signage/JAR-Lisync/raw/main/jar/JAR_Lisync.jar
-    ports:
-      - 8080:8080
+    image: giuliacarmona/lisync-app:latest
+    networks:
+     - my-bridge
     depends_on:
       - lisync-mysql
+    command: ["java","-jar","JAR_Lisync.jar"]
 
   # ----------- MYSQL LISYNC ------------ 
   lisync-mysql:
     container_name: bancoLisync
-    image: mysql:5.7
-    restart: always
+    image: giuliacarmona/lisync-banco:latest
     environment:
       MYSQL_DATABASE: lisyncDB
       MYSQL_ROOT_PASSWORD: urubu100
-    volumes:
-      - ./init-scripts:/docker-entrypoint-initdb.d
-      - mysql-data:/var/lib/mysql
+    networks:
+     - my-bridge
     ports:
       - 3306:3306
 
-volumes:
-  mysql-data:
-
+networks:
+  my-bridge:
+    driver: bridge

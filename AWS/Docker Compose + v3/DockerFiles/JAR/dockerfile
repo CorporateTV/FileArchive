@@ -1,0 +1,17 @@
+FROM openjdk:17
+
+# Instala o pacote apt-utils
+RUN apt-get update && apt-get install -y apt-utils
+
+# Instala o utilitário curl
+RUN apt-get install -y curl
+
+# Baixa o arquivo JAR do GitHub
+RUN curl -o JAR_Lisync.jar https://github.com/LiSync-Signage/JAR-Lisync/raw/main/jar/JAR_Lisync.jar
+
+# Comando para executar o JAR
+CMD ["java", "-jar", "JAR_Lisync.jar"]
+
+
+
+
